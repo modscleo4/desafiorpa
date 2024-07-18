@@ -1,36 +1,30 @@
-package br.dev.modscleo4.beans;
+package br.dev.modscleo4.crawler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import br.dev.modscleo4.crawler.Crawler;
-import br.dev.modscleo4.marketplace.CasasBahia;
 import br.dev.modscleo4.marketplace.IMarketplace;
-import br.dev.modscleo4.marketplace.MercadoLivre;
 import br.dev.modscleo4.product.Product;
 import br.dev.modscleo4.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
+@Service
 @Slf4j
-public class CrawlerBean implements CommandLineRunner {
+public class CrawlerService {
     @Autowired
     ProductRepository repository;
 
-    @Override
-    public void run(String... args) throws Exception {
-        repository.deleteAll();
-        log.info("products truncated");
-
+    public List<Product> crawl(IMarketplace[] marketplaces, String search) {
         var products     = new ArrayList<Product>();
-        var marketplaces = new IMarketplace[] { new MercadoLivre(), new CasasBahia() };
+
         var crawler      = new Crawler();
-        crawler.setSearch("Xbox Series S");
+        crawler.setSearch(search);
+        log.info("Searching for " + search + " in " + marketplaces.length + " marketplaces");
 
         for (var marketplace : marketplaces) {
             crawler.setMarketplace(marketplace);
@@ -50,5 +44,7 @@ public class CrawlerBean implements CommandLineRunner {
                 log.info(product.toString());
             }
         }
+
+        return products;
     }
 }

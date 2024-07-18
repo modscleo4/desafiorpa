@@ -1,13 +1,35 @@
 spring:
+  name: Production
+  environment: production
+  enabled: true
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:data.db
+    url: "jdbc:sqlite:data.db"
     username:
     password:
   flyway:
     enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    locations: "classpath:db/migration"
+
+---
+spring:
+  config:
+    activate.on-profile: test
+  name: Test
+  environment: testing
+  enabled: false
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: "jdbc:sqlite:test.db"
+    username:
+    password:
+  flyway:
+    enabled: true
+    clean-disabled: false
     baseline-on-migrate: true
     validate-on-migrate: true
     locations: "classpath:db/migration"

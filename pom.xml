@@ -12,12 +12,19 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
+    <spring.profiles.active>dev</spring.profiles.active>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
       <version>3.2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>6.1.11</version>
     </dependency>
 
     <dependency>
@@ -38,6 +45,20 @@
       <scope>test</scope>
       <version>3.2.6</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+      <version>5.10.3</version>
+      <exclusions>
+          <exclusion>
+              <groupId>org.hamcrest</groupId>
+              <artifactId>hamcrest-core</artifactId>
+          </exclusion>
+      </exclusions>
+    </dependency>
+
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-community-dialects</artifactId>
@@ -48,6 +69,27 @@
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
       <version>10.15.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb.flyway-test-extensions</groupId>
+      <artifactId>flyway-spring-test</artifactId>
+      <version>10.0.0</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -87,6 +129,14 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
         <version>3.2.6</version>
 			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <argLine>-Dspring.profiles.active=test</argLine>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 </project>

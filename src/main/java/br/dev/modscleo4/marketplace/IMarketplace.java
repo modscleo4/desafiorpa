@@ -2,6 +2,8 @@ package br.dev.modscleo4.marketplace;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.openqa.selenium.WebDriver;
 
 import br.dev.modscleo4.product.Product;
@@ -26,7 +28,7 @@ public interface IMarketplace {
      * @param query The query to search
      * @return The search URL
      */
-    String getSearchURL(String query);
+    String getSearchURL(@Nonnull String query);
 
     /**
      * Crawl the website and get the products
@@ -34,5 +36,5 @@ public interface IMarketplace {
      * @param driver The WebDriver already initialized with the search URL
      * @return The products
      */
-    List<Product> crawl(WebDriver driver);
+    List<Product> crawl(@Nonnull WebDriver driver);
 }
