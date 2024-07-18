@@ -4,15 +4,21 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 
-import br.dev.modscleo4.entity.Product;
+import br.dev.modscleo4.product.Product;
 
 public interface IMarketplace {
+    enum Marketplace {
+        UNKNOWN,
+        CASAS_BAHIA,
+        MERCADO_LIVRE
+    }
+
     /**
-     * Get the URL of the website
+     * Get the name of the website
      *
-     * @return The URL
+     * @return The name
      */
-    String getURL();
+    Marketplace get();
 
     /**
      * Get the search URL of the website

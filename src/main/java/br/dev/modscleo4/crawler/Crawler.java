@@ -1,4 +1,4 @@
-package br.dev.modscleo4.selenium;
+package br.dev.modscleo4.crawler;
 
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -7,9 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import br.dev.modscleo4.entity.Product;
 import br.dev.modscleo4.marketplace.IMarketplace;
+import br.dev.modscleo4.product.Product;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Crawler {
     private IMarketplace marketplace;
     private String query = "";
@@ -17,7 +19,9 @@ public class Crawler {
 
     public Crawler() {
         var options = new ChromeOptions();
-        // options.addArguments("--headless=new");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--headless=new");
+        options.addArguments("--user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'");
 
         this.driver = new ChromeDriver(options);
     }
@@ -28,8 +32,6 @@ public class Crawler {
 
     public void setSearch(@Nonnull String query) {
         this.query = query;
-
-        System.out.println("Searching for " + query);
     }
 
     public IMarketplace getMarketplace() {
@@ -43,13 +45,14 @@ public class Crawler {
     public List<Product> start() {
         String url = marketplace.getSearchURL(this.query);
 
-        System.out.println("Crawling started for " + this.marketplace.getClass().getSimpleName());
-        System.out.println("URL: " + url);
+        log.info("Crawling started for " + this.marketplace.getClass().getSimpleName());
+        log.info("Searching for " + query);
+        log.info("URL: " + url);
 
         driver.get(url);
         var products = marketplace.crawl(driver);
 
-        System.out.println("Crawling finished, found " + products.size() + " products");
+        log.info("Crawling finished, found " + products.size() + " products");
 
         return products;
     }
