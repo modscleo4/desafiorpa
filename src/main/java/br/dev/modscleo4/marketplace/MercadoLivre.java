@@ -65,8 +65,8 @@ public class MercadoLivre implements IMarketplace {
                     continue;
                 }
 
-                var nameAndURLElement = item.findElement(By.cssSelector("a.ui-search-link__title-card"));
-                var priceElement = item.findElement(By.cssSelector("span.andes-money-amount__fraction"));
+                var nameAndURLElement = item.findElement(By.cssSelector("h2.poly-box.poly-component__title a"));
+                var priceElement = item.findElement(By.cssSelector("div.poly-price__current span.andes-money-amount__fraction"));
 
                 var name = nameAndURLElement.getText();
                 var url = nameAndURLElement.getAttribute("href");

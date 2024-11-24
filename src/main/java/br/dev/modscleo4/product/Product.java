@@ -17,38 +17,50 @@
 package br.dev.modscleo4.product;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import br.dev.modscleo4.marketplace.IMarketplace;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity(name = "products")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
 public class Product implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private IMarketplace.Marketplace marketplace;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String url;
+    @DecimalMin("0.00") @Column(nullable = false)
     private double price;
+
+    @CreationTimestamp @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @UpdateTimestamp @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
     public Product(IMarketplace.Marketplace marketplace, String name, String url, double price) {
         this.marketplace = marketplace;
         this.name = name;
         this.url = url;
         this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Product[id=%d, marketplace=%s, name=%s, url=%s, price=%.2f]", id, marketplace, name, url, price);
     }
 }

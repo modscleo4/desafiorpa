@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS products (
     name        TEXT      NOT NULL,
     url         TEXT      NOT NULL,
     price       REAL      NOT NULL,
-    createdAt   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP
 );
